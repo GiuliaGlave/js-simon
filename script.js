@@ -4,62 +4,31 @@ const minutesEl = document.getElementById("minutes");
 const secondsEl = document.getElementById("seconds");
 const titleEl = document.getElementById("title");
 
-// ESEMPIO 1: PASTA
-// titleEl.innerHTML = "Butta la pasta!";
-// let secondsPasta = 12;
-// const clockPasta = setInterval(buttaLaPasta, 1000);
+const tomorrowMS = new Date("2023-02-09 9:30").getTime();
 
-// function buttaLaPasta() {
-// 	if (secondsPasta >= 0) {
-// 		secondsEl.innerHTML = (secondsPasta < 10) ? '0' + secondsPasta : secondsPasta;
-// 		secondsPasta--;
+const TimerCountdown = setInterval(PrintTimeLeft, 1000);
 
-// 	} else {
-// 		clearInterval(clockPasta);
-// 		alert("BUTTA LA PASTA!!")
-// 	}
-// }
+PrintTimeLeft();
 
-// ESEMPIO 2: CRONOMETRO
-// titleEl.innerHTML = "Cronometro";
-// let totalSeconds = 100000;
-// const clockCronometro = setInterval(stampaTempoTrascorso, 1000);
-// stampaTempoTrascorso();
-// function stampaTempoTrascorso() {
-// 	++totalSeconds;
+function PrintTimeLeft() {
+    // data oggi in ms
+    const nowMS = new Date().getTime();
 
-// 	const seconds = totalSeconds % 60;
-// 	const minutes = parseInt((totalSeconds / 60) % 60);
-// 	const hours = parseInt((totalSeconds / 60 / 60) % 24);
-// 	const days = parseInt((totalSeconds / 60 / 60 / 24));
+    // data oggi ms - data countdown ms
+    const timer = tomorrowMS - nowMS;
 
-// 	secondsEl.innerHTML = (seconds < 10) ? "0" + seconds : seconds;
-// 	minutesEl.innerHTML = (minutes < 10) ? "0" + minutes : minutes;
-// 	hoursEl.innerHTML = (hours < 10) ? "0" + hours : hours;
-// 	daysEl.innerHTML = (days < 10) ? "0" + days : days;
-// }
+    let seconds = Math.floor((timer % (1000 * 60)) / 1000);
+    let minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 * 60));
+    let hours = Math.floor((timer % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    let days = Math.floor(timer / (1000 * 60 * 60 * 24));
 
-// ESEMPIO 3: OROLOGIO
-// stampaOraAttuale()
-// const clockOrologio = setInterval(stampaOraAttuale, 1000);
-// titleEl.innerHTML = "Orologio";
-// function stampaOraAttuale() {
-// 	const now = new Date();
+    //fermo il timer
+    if (timer < 0) {
+        stopCounter();
+    }
 
-// 	const seconds = now.getSeconds() // Get the second (0-59)
-// 	const minutes = now.getMinutes() // Get the minute (0-59)
-// 	const hours = now.getHours() //Get the hour (0-23)
-// 	const days = now.getDay() // Get the day as number (0-6)
-
-// 	secondsEl.innerHTML = (seconds < 10) ? "0" + seconds : seconds;
-// 	minutesEl.innerHTML = (minutes < 10) ? "0" + minutes : minutes;
-// 	hoursEl.innerHTML = (hours < 10) ? "0" + hours : hours;
-// 	daysEl.innerHTML = (days < 10) ? "0" + days : days;
-// }
-
-// ESEMPIO 4: DATES MILLISECONDS
-// const now = new Date();
-// const tomorrow = new Date("2023-02-04 12:00");
-
-// console.log("today: " + now.getTime());
-// console.log("tomorrow: " + tomorrow.getTime());
+    secondsEl.innerHTML = seconds < 10 ? "0" + seconds : seconds;
+    minutesEl.innerHTML = minutes < 10 ? "0" + minutes : minutes;
+    hoursEl.innerHTML = hours < 10 ? "0" + hours : hours;
+    daysEl.innerHTML = days < 10 ? "0" + days : days;
+}
